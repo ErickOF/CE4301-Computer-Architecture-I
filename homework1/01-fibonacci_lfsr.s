@@ -43,6 +43,7 @@ NEXTR							; Next random number
 		SUBS		R8, R8, #0x001		; num_counter--;
 		BNE		RANDOM			; while (num_counter > 0)
 
+		; Here when finish LFSR
 		MOV		R5, #0x0F0		; Resquest value
 		STR		R5, [R2]			; Store request value
 		ADD		R2, R2, #0x004		; Next memory address, 0x304
