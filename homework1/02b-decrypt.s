@@ -92,6 +92,7 @@ NEXTR                               ; Next random number
 
         LDR     R3, [R4]            ; length = len(string)
         MOV     R4, #0x017          ; key = 23
+        MOV     R8, #0x400          ; Memory address to write decoded name
 
 ; Decryption Algorithm
 DECRYPT                             ; decrypt(string, key)
@@ -99,9 +100,10 @@ DECRYPT                             ; decrypt(string, key)
         LDR     R6, [R1]            ; num = random_numbers[i]
         EOR     R5, R5, R6          ; char = char XOR num
         SUBS    R5, R5, R4          ; char = char - key
-        STR     R5, [R2]            ; string[i] = char
-        ADD     R1, R1, #0x004      ; next random number
-        ADD     R2, R2, #0x004      ; i++
+        STR     R5, [R8]            ; Save in memory
+        ADD     R1, R1, #0x004      ; Next random number
+        ADD     R2, R2, #0x004      ; Next char
+        ADD     R8, R8, #0x004      ; Next memory address to write
         SUBS    R3, R3, #0x001      ; length--
         CMP     R3, #0x000          ; while (length != 0)
         BNE     DECRYPT
