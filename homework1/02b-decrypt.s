@@ -40,8 +40,6 @@ NEXTR                               ; Next random number
         SUBS    R8, R8, #0x001      ; num_counter--;
         BNE     RANDOM              ; while (num_counter > 0)
 
-        MOV     R1, #0x200          ; Restart memory address
-
         ; Write Claude Shannon in memory
         MOV     R4, #0x320          ; String length memory address
         MOV     R5, #0x00E          ; String length
@@ -100,7 +98,6 @@ ENCRYPT                             ; encrypt(string, key)
         LDR     R6, [R1]            ; num = random_numbers[i]
         EOR     R5, R5, R6          ; char = char XOR num
         STR     R5, [R2]            ; string[i] = char
-        ADD     R1, R1, #0x004      ; next random number
         ADD     R2, R2, #0x004      ; i++
         SUBS    R3, R3, #0x001      ; length--
         CMP     R3, #0x000          ; while (length != 0)
