@@ -40,66 +40,68 @@ NEXTR                               ; Next random number
         SUBS    R8, R8, #0x001      ; num_counter--;
         BNE     RANDOM              ; while (num_counter > 0)
 
+        MOV     R1, #0x200          ; Restart memory address
+
         ; Write Claude Shannon in memory
         MOV     R4, #0x320          ; String length memory address
         MOV     R5, #0x00E          ; String length
         STR     R5, [R4]            ; Save in memory
 
-        MOV     R3, #0x043          ; C
+        MOV     R3, #0x0E3          ; C
         STR     R3, [R2]
         ADD     R2, R2, #0x004
-        MOV     R3, #0x06c          ; l
+        MOV     R3, #0x05F          ; l
         STR     R3, [R2]
         ADD     R2, R2, #0x004
-        MOV     R3, #0x061          ; a
+        MOV     R3, #0x096          ; a
         STR     R3, [R2]
         ADD     R2, R2, #0x004
-        MOV     R3, #0x075          ; u
+        MOV     R3, #0x0FB          ; u
         STR     R3, [R2]
         ADD     R2, R2, #0x004
-        MOV     R3, #0x064          ; d
+        MOV     R3, #0x0C0          ; d
         STR     R3, [R2]
         ADD     R2, R2, #0x004
-        MOV     R3, #0x065          ; e
+        MOV     R3, #0x0A1          ; e
         STR     R3, [R2]
         ADD     R2, R2, #0x004
-        MOV     R3, #0x020          ; space
+        MOV     R3, #0x059          ; space
         STR     R3, [R2]
         ADD     R2, R2, #0x004
-        MOV     R3, #0x053          ; S
+        MOV     R3, #0x05D          ; S
         STR     R3, [R2]
         ADD     R2, R2, #0x004
-        MOV     R3, #0x068          ; h
+        MOV     R3, #0x0E4          ; h
         STR     R3, [R2]
         ADD     R2, R2, #0x004
-        MOV     R3, #0x061          ; a
+        MOV     R3, #0x0B5          ; a
         STR     R3, [R2]
         ADD     R2, R2, #0x004
-        MOV     R3, #0x06e          ; n
+        MOV     R3, #0x063          ; n
         STR     R3, [R2]
         ADD     R2, R2, #0x004
-        MOV     R3, #0x06e          ; n
+        MOV     R3, #0x076          ; n
         STR     R3, [R2]
         ADD     R2, R2, #0x004
-        MOV     R3, #0x06f          ; o
+        MOV     R3, #0x0FF          ; o
         STR     R3, [R2]
         ADD     R2, R2, #0x004
-        MOV     R3, #0x06e          ; n
+        MOV     R3, #0x039          ; n
         STR     R3, [R2]
         MOV     R2, #0x0250         ; Restart memory address
 
         LDR     R3, [R4]            ; length = len(string)
         MOV     R4, #0x017          ; key = 23
 
-; Encryption Algorithm
-ENCRYPT                             ; encrypt(string, key)
+; Decryption Algorithm
+DECRYPT                             ; decrypt(string, key)
         LDR     R5, [R2]            ; char = string[i]
-        ADD     R5, R5, R4          ; char = char + key
         LDR     R6, [R1]            ; num = random_numbers[i]
         EOR     R5, R5, R6          ; char = char XOR num
+        SUBS    R5, R5, R4          ; char = char - key
         STR     R5, [R2]            ; string[i] = char
+        ADD     R1, R1, #0x004      ; next random number
         ADD     R2, R2, #0x004      ; i++
         SUBS    R3, R3, #0x001      ; length--
         CMP     R3, #0x000          ; while (length != 0)
-        BNE     ENCRYPT
-
+        BNE     DECRYPT
